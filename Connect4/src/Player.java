@@ -1,12 +1,12 @@
 public class Player {
-    private String name;
-    private pType player;
-    private String circle;
+    protected String name;
+    protected pType player;
+    protected String circle;
 
     //Console Text colour
-    private final String RED = "\033[0;31m";
-    private final String GREEN = "\033[0;32m";
-    private final String WHITE = "\u001B[0m";
+    protected final String RED = "\033[0;31m";
+    protected final String GREEN = "\033[0;32m";
+    protected final String WHITE = "\u001B[0m";
 
     public Player(String name,String type){
         if(type.equals("P1")){
@@ -19,7 +19,7 @@ public class Player {
             circle = RED+"●"+WHITE;
         }else{
             this.player = pType.CPU;
-            this.name = RED+"CPU"+WHITE;
+            this.name = "CPU";
             circle = RED+"●"+WHITE;
         }
     }
@@ -36,7 +36,10 @@ public class Player {
         return circle;
     }
 
-    private enum pType{
+    public int CPUMove(){
+        return -1;
+    }
+    protected enum pType{
         player1, player2, CPU;
     }
 }
