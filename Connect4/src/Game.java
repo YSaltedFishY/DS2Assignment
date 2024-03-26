@@ -39,12 +39,13 @@ public class Game {
 //                COPYBoard.printBoard();
 //                input = scanner.next();
 //            }
-            if(!gBoard.makeMove(new Move(col), current)){
+            int[] pos=gBoard.makeMove(new Move(col), current);
+            if(pos[0]==-1){
                 System.out.println("Unable to add more circles. Try a different column!");
                 continue;
             }
 
-            if(gBoard.winCheck(current)){
+            if(gBoard.winCheck(current, pos[0], pos[1])){
                 gBoard.printBoard();
                 System.out.println(current.getName() + " has won!");
                 break;
