@@ -115,6 +115,10 @@ public class Board {
                     if (cells[currRow][currCol].getPlayer() == player) {
                         System.out.println("Counting token in [" + currCol + "," + currRow+"]");
                         count++;
+
+                        if(count == 4){
+                            return true;
+                        }
                     }else{
                         break;
                     }
@@ -138,6 +142,10 @@ public class Board {
                         if (cells[currRow][currCol].getPlayer() == player) {
                             System.out.println("Counting token in [" + currCol + "," + currRow + "]");
                             count++;
+
+                            if(count == 4){
+                                return true;
+                            }
                         }else{
                             break;
                         }
@@ -148,9 +156,6 @@ public class Board {
             }
         }
         System.out.println("Diagonal count " + count);
-        if(count == 4){
-            return true;
-        }
         count = 0;
 
 
@@ -167,6 +172,10 @@ public class Board {
                     if (cells[currRow][currCol].getPlayer() == player) {
                         count++;
                         System.out.println("Counting token in [" + currCol + "," + currRow+"]");
+
+                        if(count == 4){
+                            return true;
+                        }
                     }else{
                         break;
                     }
@@ -189,6 +198,10 @@ public class Board {
                         if (cells[currRow][currCol].getPlayer() == player) {
                             System.out.println("Counting token in [" + currCol + "," + currRow + "]");
                             count++;
+
+                            if(count == 4){
+                                return true;
+                            }
                         }else{
                             break;
                         }
@@ -200,10 +213,6 @@ public class Board {
             }
         }
         System.out.println("Reverse Diagonal count " + count);
-        if(count == 4){
-            return true;
-        }
-        count = 0;
 
         return false;
     }

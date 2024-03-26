@@ -13,10 +13,10 @@ public class Game {
 
     public Game(String p1, String p2){
         gBoard = new Board();
-//        player1 = new Player(p1,"P1");
-//        player2 = new Player(p2,"P2");
-        player1 = new AI_Player("p1","P1","weak");
-        player2 = new AI_Player("p2","P2","weak");
+        player1 = new Player(p1,"P1");
+        player2 = new Player(p2,"P2");
+//        player1 = new AI_Player("p1","P1","weak");
+//        player2 = new AI_Player("p2","P2","weak");
         current = player1;
         gameOver = false;
     }
@@ -44,7 +44,7 @@ public class Game {
                 }
             }else{
                 col = current.CPUMove();
-                Thread.sleep(500);
+                Thread.sleep(300);
                 if (col == -1) {
                     System.out.println("Something wrong with CPU input");
                     continue;
