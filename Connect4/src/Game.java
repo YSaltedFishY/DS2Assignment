@@ -13,8 +13,15 @@ public class Game {
 
     public Game(String p1, String p2){
         gBoard = new Board();
+<<<<<<< Updated upstream
         player1 = new Player(p1,"P1");
         player2 = new Player(p2,"P2");
+=======
+        // player1 = new Player(p1,"P1");
+        // player2 = new Player(p2,"P2");
+       player1 = new AI_Player("p1","P1","weak");
+       player2 = new AI_Player("p2","P2","hard");
+>>>>>>> Stashed changes
         current = player1;
         gameOver = false;
     }

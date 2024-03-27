@@ -25,11 +25,18 @@ public class Board {
         return colNum;
     }
 
+<<<<<<< Updated upstream
     public int getRowNum() {
         return rowNum;
     }
 
     // Getters
+=======
+    public int getColNum() {
+        return colNum;
+    }
+
+>>>>>>> Stashed changes
     public Cell getCell(int row, int col) {
         if (row >= 0 && row < rowNum && col >= 0 && col < colNum) {
             return cells[row][col];
@@ -37,8 +44,12 @@ public class Board {
             return null; 
         }
     }
+<<<<<<< Updated upstream
     
     // Board consturctor 
+=======
+
+>>>>>>> Stashed changes
     public Board(int numMove, Cell[][] c){
         this.numMove = numMove;
         rowNum = 6;
