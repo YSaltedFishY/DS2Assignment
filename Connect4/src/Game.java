@@ -5,6 +5,7 @@ public class Game {
     private Board COPYBoard;
     private Player player1;
     private Player player2;
+    private Player AI_Player;
     private Player current;
     private boolean gameOver;
 
@@ -18,10 +19,14 @@ public class Game {
         gameOver = false;
     }
 
+   
+
+
     public void gameStart(){
         Scanner scanner = new Scanner(System.in);
 
         while(!gameOver){
+            // Display the board
             gBoard.printBoard();
             System.out.println(current.getName() + "'s turn [token: " + current.getCircle() + "]");
             System.out.print("Please enter the column you wish to insert: ");
@@ -64,6 +69,8 @@ public class Game {
         }
 
     }
+    
+    
 
     private int checkCol(String col){
         String[] alph={"A","B","C","D","E","F","G"};
@@ -72,23 +79,6 @@ public class Game {
             if(col.equals(alph[i])) return i;
         }
         return -1;
-//        if(col.equalsIgnoreCase("a")){
-//            return 0;
-//        }else if(col.equalsIgnoreCase("b")) {
-//            return 1;
-//        }else if (col.equalsIgnoreCase("c")) {
-//            return 2;
-//        }else if (col.equalsIgnoreCase("d")) {
-//            return 3;
-//        }else if (col.equalsIgnoreCase("e")) {
-//            return 4;
-//        }else if (col.equalsIgnoreCase("f")) {
-//            return 5;
-//        }else if (col.equalsIgnoreCase("g")) {
-//            return 6;
-//        }else{
-//            return -1;
-//        }
     }
 
 

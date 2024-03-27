@@ -5,6 +5,7 @@ public class Board {
     private int numMove;
 
     public Board(){
+        // Initialize the board
         numMove = 0;
         rowNum = 6;
         colNum = 7;
@@ -15,11 +16,29 @@ public class Board {
             }
         }
     }
-
+        // Getters   
     public int getNumMove() {
         return numMove;
     }
+    // Getters
+    public int getColNum() {
+        return colNum;
+    }
 
+    public int getRowNum() {
+        return rowNum;
+    }
+
+    // Getters
+    public Cell getCell(int row, int col) {
+        if (row >= 0 && row < rowNum && col >= 0 && col < colNum) {
+            return cells[row][col];
+        } else {
+            return null; 
+        }
+    }
+    
+    // Board consturctor 
     public Board(int numMove, Cell[][] c){
         this.numMove = numMove;
         rowNum = 6;
@@ -32,11 +51,12 @@ public class Board {
         }
     }
 
+    
     public Board other(){
         return new Board(numMove,cells);
     }
 
-
+ // Print the board 
     public void printBoard(){
         System.out.println("----Connect 4----");
         for(int i = 0; i < rowNum; i++){
@@ -49,106 +69,37 @@ public class Board {
         System.out.println("- A B C D E F G -");
     }
 
+    // Make a move - player 
     public int[] makeMove(Move move,Player player){
+        // iterate through the rows
         for(int row = rowNum - 1; row >= 0; row--){
+            // if the cell is empty
             if(cells[row][move.getCol()].getPlayer() == null){
+                // set the player
                 cells[row][move.getCol()].setPlayer(player);
+                // increment the number of moves 
                 numMove++;
+                // return the row and column of the move
                 return new int [] {row, move.getCol()};
             }
         }
+        // 
         return new int [] {-1, move.getCol()};
     }
 
+    
+
+     // check if the board is full - draw 
     public boolean isFull(){
         if(numMove == rowNum * colNum) return true;
         return false;
     }
 
-//    public boolean winCheck(Player player){
-//        int count = 0;
-//
-//        //Horizontal 4
-//        for(int i = 0; i < rowNum; i++){
-//            for(int j = 0; j < colNum; j++){
-//                if(cells[i][j].getPlayer() == player){
-//                    count++;
-//                }else {
-//                    count = 0;
-//                }
-//                if(count == 4){
-//                    System.out.println("Horizontal win");
-//                    return true;
-//                }
-//            }
-//            count = 0;
-//        }
-//
-//        //Vertical 4 optimizable
-//        for(int j = 0; j < colNum; j++){
-//            for(int i = 0; i < rowNum; i++){
-//                if(cells[i][j].getPlayer() == player){
-//                    count++;
-//                }else{
-//                    count = 0;
-//                }
-//                if(count == 4){
-//                    System.out.println("Vertical win");
-//                    return true;
-//                }
-//            }
-//            count = 0;
-//        }
-//
-//        //Diagonal 4
-//        for(int i = rowNum - 1; i >= 0; i--){
-//            for(int j = 0; j < colNum; j++){
-//                if(cells[i][j].getPlayer() == player) {
-//                    count++;
-//                    //System.out.println("If statement current i,j: " + i + "," + j + " count: " + count);
-//                    for (int row = i - 1; row >= 0; row--) {
-//                        if (j + 1 < colNum && cells[row][j+1].getPlayer() == player) {
-//                            count++;
-//                            //System.out.println("current i,j: " + row + "," + (j+1) + " count: " + count + cells[row][j+1].getPlayer().getName());
-//                            j++;
-//                        }
-//                        if(count == 4){
-//                            System.out.println("Diagonal win");
-//                            return true;
-//                        }
-//                    }
-//                }
-//                count = 0;
-//            }
-//            count = 0;
-//        }
-//
-//        //Reverse diagonal
-//        for(int i = 0; i < rowNum; i++){
-//            for(int j = 0; j < colNum; j++){
-//                if(cells[i][j].getPlayer() == player) {
-//                    count++;
-//                    for (int row = i+1; row < rowNum; row++) {
-//                        if (j + 1 < colNum && cells[row][j+1].getPlayer() == player) {
-//                            count++;
-//                            j++;
-//                        }
-//
-//                        if(count == 4){
-//                            System.out.println("Reverse Diagonal win");
-//                            return true;
-//                        }
-//                    }
-//                }
-//                count = 0;
-//            }
-//            count = 0;
-//        }
-//
-//        return false;
-//    }
+
+     // check if the player has won  
     public boolean winCheck(Player player , int row, int col){
         int count = 0;
+
 
         //Horizontal 4
         for(int j = 0; j < colNum; j++) {
@@ -182,8 +133,7 @@ public class Board {
         //Diagonal 4
 
 
-        //System.out.println("If statement current i,j: " + i + "," + j + " count: " + count);
-        //int[] start=new int[2];
+        
         int diff=colNum-col-1;
         if(diff>row) diff=row;
 
@@ -198,7 +148,6 @@ public class Board {
 
             if (cells[r_start][c_start].getPlayer() == player) {
                 count++;
-                //System.out.println("current row,col: " + r_start + "," + (c_start) + " count: " + count + cells[r_start][c_start].getPlayer().getName());
                 if (count == 4) {
                     System.out.println("Diagonal win");
                     return true;
@@ -212,10 +161,6 @@ public class Board {
 
         }
 
-
-
-
-
         //Reverse diagonal
 
         count = 0;
@@ -224,12 +169,9 @@ public class Board {
 
         c_start= col-diff;
         r_start=row-diff;
-//        if(c_start<0) c_start=0;
-//        if(r_start<0) r_start=0;
 
 
         while(c_start<colNum && r_start<rowNum ){
-                //System.out.println("current row,col: " + r_start + "," + (c_start) + cells[r_start][c_start].getPlayer());
 
                 if(cells[r_start][c_start].getPlayer() == player) {
                     count++;
@@ -246,7 +188,6 @@ public class Board {
                 c_start++;
 
             }
-
 
         return false;
     }
