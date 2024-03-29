@@ -229,7 +229,7 @@ public class Board {
 
 
         while(c_start<colNum && r_start<rowNum ){
-                //System.out.println("current row,col: " + r_start + "," + (c_start) + cells[r_start][c_start].getPlayer());
+                System.out.println("current row,col: " + r_start + "," + (c_start) + cells[r_start][c_start].getPlayer());
 
                 if(cells[r_start][c_start].getPlayer() == player) {
                     count++;
