@@ -51,16 +51,16 @@ public class Board {
         System.out.println("- A B C D E F G -");
     }
 
-    public boolean makeMove(Move move,Player player){
+    public int[] makeMove(Move move,Player player){
         for(int row = rowNum - 1; row >= 0; row--){
             if(cells[row][move.getCol()].getPlayer() == null){
                 cells[row][move.getCol()].setPlayer(player);
                 move.setRow(row);
                 numMove++;
-                return true;
+                return new int [] {row, move.getCol()};
             }
         }
-        return false;
+        return new int [] {-1, move.getCol()};
     }
 
     public boolean isFull(){
@@ -68,28 +68,27 @@ public class Board {
         return false;
     }
 
-    //winCheck improved version
-    public boolean winCheck(Player player,Move move){
+    public boolean winCheck(Player player , int row, int col){
         int count = 0;
 
         //Horizontal 4
-        for(int j = 0; j < colNum; j++){
-            if(cells[move.getRow()][j].getPlayer() == player){
+        for(int j = 0; j < colNum; j++) {
+            if (cells[row][j].getPlayer() == player) {
                 count++;
-            }else {
+            } else {
                 count = 0;
             }
+
             if(count == 4){
                 System.out.println("Horizontal win");
                 return true;
             }
         }
-        count = 0;
 
 
-        //Vertical 4
-        for(int i = rowNum -1; i >= 0; i--){
-            if(cells[i][move.getCol()].getPlayer() == player){
+        //Vertical 4 optimizable
+        for(int j = 0; j < rowNum; j++){
+            if(cells[j][col].getPlayer() == player){
                 count++;
             }else{
                 count = 0;
@@ -99,208 +98,76 @@ public class Board {
                 return true;
             }
         }
-        count = 0;
 
 
         //Diagonal 4
-        int currRow = move.getRow();
-        int currCol = move.getCol();
-        if((move.getCol()+1) <= 6 && (move.getRow()-1) >= 0) {
-//            System.out.println(cells[move.getRow()-1][move.getCol()+1].getPlayer() + "<-if player");
-            if (cells[move.getRow()-1][move.getCol()+1].getPlayer() == player) {
-                while (((currRow) >= 0 && (currCol) <= 6)) {
-//                    System.out.println("while loop up");
-//                    System.out.println(cells[currRow][currCol].getPlayer() == player);
-//                    System.out.println("row: " + currRow +"col: " + currCol);
-                    if (cells[currRow][currCol].getPlayer() == player) {
-                        System.out.println("Counting token in [" + currCol + "," + currRow+"]");
-                        count++;
 
-                        if(count == 4){
-                            return true;
-                        }
-                    }else{
-                        break;
-                    }
-                    currRow--;
-                    currCol++;
+
+        //System.out.println("If statement current i,j: " + i + "," + j + " count: " + count);
+        //int[] start=new int[2];
+        int diff=colNum-col-1;
+        if(diff>row) diff=row;
+
+        int c_start=(col+diff) ;
+        int r_start=row-diff;
+
+        count=0;
+
+
+        while (r_start<rowNum && c_start>=0) {
+            System.out.println("current row,col: " + r_start + "," + (c_start) + cells[r_start][c_start].getPlayer());
+
+            if (cells[r_start][c_start].getPlayer() == player) {
+                count++;
+                //System.out.println("current row,col: " + r_start + "," + (c_start) + " count: " + count + cells[r_start][c_start].getPlayer().getName());
+                if (count == 4) {
+                    System.out.println("Diagonal win");
+                    return true;
                 }
             }
-        }
-        if(count > 0) {
-            currRow = move.getRow() + 1;
-            currCol = move.getCol() - 1;
-        }else{
-            currRow = move.getRow();
-            currCol = move.getCol();
-        }
-        if((move.getCol()-1) >= 0 && (move.getRow()+1) <= 5) {
-            if (cells[move.getRow() + 1][move.getCol() - 1].getPlayer() == player) {
-                while (((currRow) <= 5 && (currCol) >= 0)) {
-//                    System.out.println(cells[currRow][currCol].getPlayer() == player);
-                    if(currRow <= 5 && currCol >=0) {
-                        if (cells[currRow][currCol].getPlayer() == player) {
-                            System.out.println("Counting token in [" + currCol + "," + currRow + "]");
-                            count++;
-
-                            if(count == 4){
-                                return true;
-                            }
-                        }else{
-                            break;
-                        }
-                    }
-                    currRow++;
-                    currCol--;
-                }
+            else {
+                count=0;
             }
+            r_start++;
+            c_start--;
+
         }
-        System.out.println("Diagonal count " + count);
-        count = 0;
+
+
+
 
 
         //Reverse diagonal
-        currRow = move.getRow();
-        currCol = move.getCol();
-        if((move.getCol()-1) >= 0 && (move.getRow()-1) >= 0) {
-//            System.out.println(cells[move.getRow()-1][move.getCol()+1].getPlayer() + "<-if player");
-            if (cells[move.getRow()-1][move.getCol()-1].getPlayer() == player) {
-                while (((currRow) >= 0 && (currCol) >= 0)) {
-//                    System.out.println("while loop up");
-//                    System.out.println(cells[currRow][currCol].getPlayer() == player);
-//                    System.out.println("row: " + currRow +"col: " + currCol);
-                    if (cells[currRow][currCol].getPlayer() == player) {
-                        count++;
-                        System.out.println("Counting token in [" + currCol + "," + currRow+"]");
 
-                        if(count == 4){
-                            return true;
-                        }
-                    }else{
-                        break;
-                    }
-                    currRow--;
-                    currCol--;
-                }
-            }
-        }
-        if(count > 0) {
-            currRow = move.getRow() + 1;
-            currCol = move.getCol() + 1;
-        }else{
-            currRow = move.getRow();
-            currCol = move.getCol();
-        }
-        if((move.getCol()+1) <= 6 && (move.getRow()+1) <= 5) {
-            if (cells[move.getRow() + 1][move.getCol() + 1].getPlayer() == player) {
-                while (((currRow) <= 5 && (currCol) <= 6)) {
-                    if(currRow <= 5 && currCol <= 6) {
-                        if (cells[currRow][currCol].getPlayer() == player) {
-                            System.out.println("Counting token in [" + currCol + "," + currRow + "]");
-                            count++;
+        count = 0;
+        if(col>row) diff=row;
+        else diff=col;
 
-                            if(count == 4){
-                                return true;
-                            }
-                        }else{
-                            break;
-                        }
-                    }
-                    currRow++;
-                    currCol++;
-//                    System.out.println("x["+currCol+","+currRow+"]y");
-                }
-            }
-        }
-        System.out.println("Reverse Diagonal count " + count);
-
-        return false;
-    }
+        c_start= col-diff;
+        r_start=row-diff;
+//        if(c_start<0) c_start=0;
+//        if(r_start<0) r_start=0;
 
 
+        while(c_start<colNum && r_start<rowNum ){
+                //System.out.println("current row,col: " + r_start + "," + (c_start) + cells[r_start][c_start].getPlayer());
 
-
-
-    //winCheck ver1
-    public boolean winCheck(Player player){
-        int count = 0;
-
-        //Horizontal 4
-        for(int i = 0; i < rowNum; i++){
-            for(int j = 0; j < colNum; j++){
-                if(cells[i][j].getPlayer() == player){
+                if(cells[r_start][c_start].getPlayer() == player) {
                     count++;
+
+                    if(count == 4){
+                        System.out.println("Reverse Diagonal win");
+                        return true;
+                    }
+
                 }else {
                     count = 0;
                 }
-                if(count == 4){
-                    System.out.println("Horizontal win");
-                    return true;
-                }
-            }
-            count = 0;
-        }
+                r_start++;
+                c_start++;
 
-        //Vertical 4 optimizable
-        for(int j = 0; j < colNum; j++){
-            for(int i = 0; i < rowNum; i++){
-                if(cells[i][j].getPlayer() == player){
-                    count++;
-                }else{
-                    count = 0;
-                }
-                if(count == 4){
-                    System.out.println("Vertical win");
-                    return true;
-                }
             }
-            count = 0;
-        }
 
-        //Diagonal 4
-        for(int i = rowNum - 1; i >= 0; i--){
-            for(int j = 0; j < colNum; j++){
-                if(cells[i][j].getPlayer() == player) {
-                    count++;
-                    //System.out.println("If statement current i,j: " + i + "," + j + " count: " + count);
-                    for (int row = i - 1; row >= 0; row--) {
-                        if (j + 1 < colNum && cells[row][j+1].getPlayer() == player) {
-                            count++;
-                            //System.out.println("current i,j: " + row + "," + (j+1) + " count: " + count + cells[row][j+1].getPlayer().getName());
-                            j++;
-                        }
-                        if(count == 4){
-                            System.out.println("Diagonal win");
-                            return true;
-                        }
-                    }
-                }
-                count = 0;
-            }
-            count = 0;
-        }
-
-        //Reverse diagonal
-        for(int i = 0; i < rowNum; i++){
-            for(int j = 0; j < colNum; j++){
-                if(cells[i][j].getPlayer() == player) {
-                    count++;
-                    for (int row = i+1; row < rowNum; row++) {
-                        if (j + 1 < colNum && cells[row][j+1].getPlayer() == player) {
-                            count++;
-                            j++;
-                        }
-
-                        if(count == 4){
-                            System.out.println("Reverse Diagonal win");
-                            return true;
-                        }
-                    }
-                }
-                count = 0;
-            }
-            count = 0;
-        }
 
         return false;
     }
