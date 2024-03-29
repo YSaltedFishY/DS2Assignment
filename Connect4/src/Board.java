@@ -51,16 +51,16 @@ public class Board {
         System.out.println("- A B C D E F G -");
     }
 
-    public int[] makeMove(Move move,Player player){
+    public boolean makeMove(Move move,Player player){
         for(int row = rowNum - 1; row >= 0; row--){
             if(cells[row][move.getCol()].getPlayer() == null){
                 cells[row][move.getCol()].setPlayer(player);
                 move.setRow(row);
                 numMove++;
-                return new int [] {row, move.getCol()};
+                return true;
             }
         }
-        return new int [] {-1, move.getCol()};
+        return false;
     }
 
     public boolean isFull(){
@@ -68,8 +68,10 @@ public class Board {
         return false;
     }
 
-    public boolean winCheck(Player player , int row, int col){
+    public boolean winCheck(Player player, Move move){
         int count = 0;
+        int row=move.getRow();
+        int col=move.getCol();
 
         //Horizontal 4
         for(int j = 0; j < colNum; j++) {
