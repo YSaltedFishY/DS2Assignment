@@ -31,8 +31,7 @@ public class AI_Player extends Player{
 
     public int weakCPU(){
         Random random = new Random();
-        int randMove = random.nextInt(7);
-        return randMove;
+        return random.nextInt(7);
     }
 
 }

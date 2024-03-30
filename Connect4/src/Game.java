@@ -60,7 +60,7 @@ public class Game {
 
             Move currentMove = new Move(col);
 
-            if(!gBoard.makeMove(currentMove, current)){
+            if(gBoard.makeMove(currentMove, current)[0]==-1){
                 System.out.println("Unable to add more circles. Try a different column!");
                 continue;
             }
@@ -72,7 +72,7 @@ public class Game {
 //                break;
 //            }
 
-            if(gBoard.winCheck(current,currentMove)){
+            if(gBoard.winCheck(current,currentMove.getRow(),currentMove.getCol())){
                 gBoard.printBoard();
                 if(current == player1) {
                     System.out.println(current.getName() + " " + current.getCircle() + " P1 has won!");
