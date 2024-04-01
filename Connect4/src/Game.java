@@ -1,11 +1,12 @@
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class Game {
     private Board gBoard;
-    private Board COPYBoard;
-    private Player player1;
-    private Player player2;
+    private Player human;
+    private Player AIplayer;
     private Player current;
     private boolean gameOver;
 
@@ -13,11 +14,11 @@ public class Game {
 
     public Game(String p1, String p2){
         gBoard = new Board();
-        player1 = new Player(p1,"P1");
-        player2 = new Player(p2,"P2");
+        human = new Player(p1,"P1");
+        AIplayer = new Player(p2,"P2");
 //        player1 = new AI_Player("p1","P1","weak");
 //        player2 = new AI_Player("p2","P2","weak");
-        current = player1;
+        current = human;
         gameOver = false;
     }
 
@@ -27,7 +28,7 @@ public class Game {
         while(!gameOver){
             gBoard.printBoard();
             int col = 0;
-            if(current == player1) {
+            if(current == human) {
                 System.out.println("P1: " + current.getName() + "'s turn [token: " + current.getCircle() + "]");
             }else{
                 System.out.println("P2: " + current.getName() + "'s turn [token: " + current.getCircle() + "]");
@@ -74,7 +75,7 @@ public class Game {
 
             if(gBoard.winCheck(current,currentMove)){
                 gBoard.printBoard();
-                if(current == player1) {
+                if(current == human) {
                     System.out.println(current.getName() + " " + current.getCircle() + " P1 has won!");
                 }else{
                     System.out.println(current.getName() + " " + current.getCircle() + " P2 has won!");
@@ -87,10 +88,10 @@ public class Game {
                 break;
             }
 
-            if(current == player1){
-                current = player2;
+            if(current == human){
+                current = AIplayer;
             }else{
-                current = player1;
+                current = human;
             }
         }
 
@@ -127,6 +128,71 @@ public class Game {
 
         return -1;
 
+    }
+    public int calculate_move(Move playerMove){
+        return minimax(gBoard, 42-gBoard.getNumMove(), -999999,999999,playerMove, true)[0];
+    }
+
+    public int[] minimax(Board b, int depth, int alpha, int beta, Move m, boolean isMax ) {
+        Player p;
+
+        if (!isMax) p = human;
+        else p = AIplayer;
+        boolean is_won = b.winCheck(p, m);
+        if (depth == 0 || is_won) {
+            if(is_won) {
+                if (p.equals(AIplayer)) return new int[]{-1, 999999};
+                else if (p.equals(human)) return new int[]{-1, -999999};
+            }
+            else return new int[]{-1, 0};
+
+        }
+        if (isMax) {
+            int value = -9999999;
+            int column = 0;
+            for (int col = 0; col < 7; col++) {
+                Move currentMove = new Move(col);
+
+                Board b_copy = new Board(b.cells);
+                if (!b_copy.makeMove(currentMove, current)) {
+                    continue;
+                }
+                int new_score = minimax(b_copy, depth - 1, alpha, beta, currentMove, false)[1];
+                if (new_score > value) {
+                    value = new_score;
+                    column = col; //the col of the next best move
+
+                }
+                alpha = max(value, alpha);
+                if (alpha >= beta) break;
+
+            }
+            return new int[]{column, value};
+
+        }
+        else {
+            int value = 9999999;
+            int column = 0;
+            for (int col = 0; col < 7; col++) {
+                Move currentMove = new Move(col);
+
+                Board b_copy = new Board(b.cells);
+                if (!b_copy.makeMove(currentMove, current)) {
+                    continue;
+                }
+                int new_score = minimax(b_copy, depth - 1, alpha, beta, currentMove, true)[1];
+                if (new_score < value) {
+                    value = new_score;
+                    column = col; //the col of the next best move
+
+                }
+                beta = min(value, beta);
+                if (alpha >= beta) break;
+
+            }
+            return new int[]{column, value};
+
+        }
     }
 
 
