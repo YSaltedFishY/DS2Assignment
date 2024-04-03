@@ -4,8 +4,8 @@ import java.util.Hashtable;
 
 public class Board {
     int[][] cells;
-    private int rowNum;
-    private int colNum;
+    private final int rowNum;
+    private final int colNum;
     private int numMove;
     static Hashtable<Integer, String> circles;
     static{
@@ -108,7 +108,7 @@ public class Board {
             }
         }
         //Vertical 4 optimizable
-        System.out.println(move.getRow());
+        //System.out.println(move.getRow());
 
             for(int j = move.getRow(); j < rowNum-3; j++){
                 if (cells[j][col]+cells[j+1][col]+cells[j+2][col]+cells[j+3][col]== player.value*4) {
@@ -179,10 +179,9 @@ public class Board {
         return false;
     }
     public int boardScore(Player player){
-        printBoard();
+
         int score = 0;
-        int count=0;
-        int highest_count=0;
+
         //checking horizontal
         for(int i = 0; i < rowNum; i++) {
             for (int j = 0; j < colNum - 3; j++) {

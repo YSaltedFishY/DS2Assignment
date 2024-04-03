@@ -1,3 +1,5 @@
+import java.util.Objects;
+import java.util.Random;
 import java.util.Scanner;
 
 import static java.lang.Math.max;
@@ -8,32 +10,29 @@ public class Game {
     private Player human;
     private Player AIplayer;
     private Player current;
-    private boolean gameOver;
 
-    public Game(String p1){
+    public Game(String p1,int difficulty){
+        //pve
         gBoard = new Board();
         human = new Player(p1,"P1");
-        //AIplayer = new Player("P2");
-//        player1 = new AI_Player("p1","P1","weak");
-        AIplayer = new AI_Player("CPU","P2","weak");
+        AIplayer = new Player(difficulty);
+
         current = human;
-        gameOver = false;
     }
 
     public Game(String p1, String p2){
+        //pvp
         gBoard = new Board();
         human = new Player(p1,"P1");
         AIplayer = new Player(p2,"P2");
-//        player1 = new AI_Player("p1","P1","weak");
-//        player2 = new AI_Player("p2","P2","weak");
         current = human;
-        gameOver = false;
     }
 
     public void gameStart() throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         Move currentMove = null;
-        while(!gameOver){
+
+        while(true){
             gBoard.printBoard();
             int col = 0;
             if(current == human) {
@@ -60,13 +59,6 @@ public class Game {
                     continue;
                 }
             }
-
-//            if(col == 7){
-//                COPYBoard = new Board(gBoard.getNumMove(), gBoard.cells);
-//                System.out.println("Display new board here: ");
-//                COPYBoard.printBoard();
-//                input = scanner.next();
-//            }
 
              currentMove= new Move(col);
 
@@ -117,7 +109,7 @@ public class Game {
     }
     public int calculate_move(Move playerMove){
         //depth is set to 6 to make the code run fast enough
-        return minimax(gBoard, 4, -9999999,9999999,playerMove, false)[0];
+        return minimax(gBoard, AIplayer.getDifficulty(), -9999999,9999999,playerMove, false)[0];
     }
 
     public int[] minimax(Board b, int depth, int alpha, int beta, Move m, boolean isMax ) {

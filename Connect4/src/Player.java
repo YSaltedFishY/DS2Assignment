@@ -3,6 +3,7 @@ public class Player {
     protected pType player;
     protected String circle;
     protected int value;
+    private int difficulty=0;
 
     //Console Text colour
     protected final String RED = "\033[0;31m";
@@ -15,6 +16,7 @@ public class Player {
             this.player = pType.player1;
             this.value=1;
             circle = GREEN+"●"+WHITE;
+
         } else if (type.equals("P2")) {
             this.name = RED+name+WHITE;
             this.player = pType.player2;
@@ -25,9 +27,16 @@ public class Player {
             this.name = "CPU";
             this.value=-1;
             circle = RED+"●"+WHITE;
+            this.difficulty=3;
         }
     }
-
+    public Player(int difficulty) {
+        this.name = "CPU";
+        this.value=-1;
+        this.player = pType.CPU;
+        circle = RED + "●" + WHITE;
+        this.difficulty = difficulty;
+    }
     public String getName() {
         return name;
     }
@@ -39,10 +48,10 @@ public class Player {
     public String getCircle() {
         return circle;
     }
-
-    public int CPUMove(){
-        return -1;
+    public int getDifficulty(){
+        return difficulty;
     }
+
     protected enum pType{
         player1, player2, CPU;
     }
