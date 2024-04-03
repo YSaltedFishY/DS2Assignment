@@ -25,6 +25,11 @@ public class AI_Player extends Player{
         return -1;
     }
 
+//    public int CPUMove(Move move){
+//        return game.calculateMove(move);
+//        //return -1;
+//    }
+
     public String getName(){
         return name;
     }

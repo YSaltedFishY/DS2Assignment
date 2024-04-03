@@ -10,7 +10,15 @@ public class Game {
     private Player current;
     private boolean gameOver;
 
-
+    public Game(String p1){
+        gBoard = new Board();
+        human = new Player(p1,"P1");
+        //AIplayer = new Player("P2");
+//        player1 = new AI_Player("p1","P1","weak");
+        AIplayer = new AI_Player("CPU","P2","weak");
+        current = human;
+        gameOver = false;
+    }
 
     public Game(String p1, String p2){
         gBoard = new Board();
@@ -24,7 +32,7 @@ public class Game {
 
     public void gameStart() throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
-
+        Move currentMove = null;
         while(!gameOver){
             gBoard.printBoard();
             int col = 0;
@@ -44,7 +52,8 @@ public class Game {
                     continue;
                 }
             }else{
-                col = current.CPUMove();
+                //col = current.CPUMove(currentMove);
+                col=calculate_move(currentMove);
                 Thread.sleep(300);
                 if (col == -1) {
                     System.out.println("Something wrong with CPU input");
@@ -59,7 +68,7 @@ public class Game {
 //                input = scanner.next();
 //            }
 
-            Move currentMove = new Move(col);
+             currentMove= new Move(col);
 
             if(!gBoard.makeMove(currentMove, current)){
                 System.out.println("Unable to add more circles. Try a different column!");
@@ -98,69 +107,54 @@ public class Game {
     }
 
     private int checkCol(String col){
-//        String[] alph={"A","B","C","D","E","F","G"};
-//        col=col.toUpperCase();
-//        for(int i =0;i<alph.length;i++){
-//            if(col.equals(alph[i])) return i;
-//        }
-//        return -1;
-        if(col.equalsIgnoreCase("a")){
-            return 0;
+        String[] alph={"A","B","C","D","E","F","G"};
+        col=col.toUpperCase();
+        for(int i =0;i<alph.length;i++){
+            if(col.equals(alph[i])) return i;
         }
-        if(col.equalsIgnoreCase("b")) {
-            return 1;
-        }
-        if (col.equalsIgnoreCase("c")) {
-            return 2;
-        }
-        if (col.equalsIgnoreCase("d")) {
-            return 3;
-        }
-        if (col.equalsIgnoreCase("e")) {
-            return 4;
-        }
-        if (col.equalsIgnoreCase("f")) {
-            return 5;
-        }
-        if (col.equalsIgnoreCase("g")) {
-            return 6;
-        }
-
         return -1;
 
     }
     public int calculate_move(Move playerMove){
-        return minimax(gBoard, 42-gBoard.getNumMove(), -999999,999999,playerMove, true)[0];
+        //depth is set to 6 to make the code run fast enough
+        return minimax(gBoard, 6, -9999999,9999999,playerMove, false)[0];
     }
 
     public int[] minimax(Board b, int depth, int alpha, int beta, Move m, boolean isMax ) {
-        Player p;
 
-        if (!isMax) p = human;
-        else p = AIplayer;
-        boolean is_won = b.winCheck(p, m);
+        Player p,o;
+        //human is max, player is min
+        if (!isMax) {p = AIplayer;o=human;}
+        else {p = human;o=AIplayer;}
+        boolean is_won = b.winCheck(o, m);
+
+        //System.out.println("player is" +p.getName());
         if (depth == 0 || is_won) {
             if(is_won) {
-                if (p.equals(AIplayer)) return new int[]{-1, 999999};
-                else if (p.equals(human)) return new int[]{-1, -999999};
+                if (o.equals(AIplayer)) return new int[]{m.getCol(), -999999};
+                else if (o.equals(human)) return new int[]{m.getCol(), 999999};
             }
-            else return new int[]{-1, 0};
+            else{
+                return new int[]{m.getCol(), b.boardScore(p)};
 
+            }
         }
-        if (isMax) {
-            int value = -9999999;
+        if(isMax){
+            int value = Integer.MIN_VALUE;
             int column = 0;
             for (int col = 0; col < 7; col++) {
                 Move currentMove = new Move(col);
 
                 Board b_copy = new Board(b.cells);
-                if (!b_copy.makeMove(currentMove, current)) {
+                if (!b_copy.makeMove(currentMove, p)) {
                     continue;
                 }
                 int new_score = minimax(b_copy, depth - 1, alpha, beta, currentMove, false)[1];
                 if (new_score > value) {
                     value = new_score;
                     column = col; //the col of the next best move
+                    //System.out.println("Next winning column for "+p.getName()+" is "+col);
+
 
                 }
                 alpha = max(value, alpha);
@@ -171,19 +165,20 @@ public class Game {
 
         }
         else {
-            int value = 9999999;
+            int value = Integer.MAX_VALUE;
             int column = 0;
             for (int col = 0; col < 7; col++) {
                 Move currentMove = new Move(col);
 
                 Board b_copy = new Board(b.cells);
-                if (!b_copy.makeMove(currentMove, current)) {
+                if (!b_copy.makeMove(currentMove, p)) {
                     continue;
                 }
                 int new_score = minimax(b_copy, depth - 1, alpha, beta, currentMove, true)[1];
                 if (new_score < value) {
                     value = new_score;
                     column = col; //the col of the next best move
+                    //System.out.println("Next winning column for "+p.getName()+" is "+col);
 
                 }
                 beta = min(value, beta);

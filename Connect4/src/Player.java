@@ -2,6 +2,7 @@ public class Player {
     protected String name;
     protected pType player;
     protected String circle;
+    protected int value;
 
     //Console Text colour
     protected final String RED = "\033[0;31m";
@@ -12,14 +13,17 @@ public class Player {
         if(type.equals("P1")){
             this.name = GREEN+name+WHITE;
             this.player = pType.player1;
+            this.value=1;
             circle = GREEN+"●"+WHITE;
         } else if (type.equals("P2")) {
             this.name = RED+name+WHITE;
             this.player = pType.player2;
+            this.value=-1;
             circle = RED+"●"+WHITE;
         }else{
             this.player = pType.CPU;
             this.name = "CPU";
+            this.value=-1;
             circle = RED+"●"+WHITE;
         }
     }
