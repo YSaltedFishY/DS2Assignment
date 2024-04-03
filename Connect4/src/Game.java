@@ -117,7 +117,7 @@ public class Game {
     }
     public int calculate_move(Move playerMove){
         //depth is set to 6 to make the code run fast enough
-        return minimax(gBoard, 6, -9999999,9999999,playerMove, false)[0];
+        return minimax(gBoard, 4, -9999999,9999999,playerMove, false)[0];
     }
 
     public int[] minimax(Board b, int depth, int alpha, int beta, Move m, boolean isMax ) {
@@ -145,7 +145,7 @@ public class Game {
             for (int col = 0; col < 7; col++) {
                 Move currentMove = new Move(col);
 
-                Board b_copy = new Board(b.cells);
+                Board b_copy = b.other();
                 if (!b_copy.makeMove(currentMove, p)) {
                     continue;
                 }

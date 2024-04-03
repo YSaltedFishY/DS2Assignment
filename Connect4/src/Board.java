@@ -93,42 +93,29 @@ public class Board {
     }
 
     public boolean isFull(){
-        if(numMove == rowNum * colNum) return true;
-        return false;
+        return numMove == rowNum * colNum;
     }
 
     public boolean winCheck(Player player, Move move){
-        int count = 0;
+        int count;
         int row=move.getRow();
         int col=move.getCol();
 
         //Horizontal 4
-        for(int j = 0; j < colNum; j++) {
-            if (cells[row][j] == player.value) {
-                count++;
-            } else {
-                count = 0;
-            }
-
-            if(count == 4){
-                //System.out.println("Horizontal win");
+        for(int j = 0; j < colNum-3; j++) {
+            if (cells[row][j]+cells[row][j+1]+cells[row][j+2]+cells[row][j+3]== player.value*4) {
                 return true;
             }
         }
-
-
         //Vertical 4 optimizable
-        for(int j = 0; j < rowNum; j++){
-            if(cells[j][col] == player.value){
-                count++;
-            }else{
-                count = 0;
+        System.out.println(move.getRow());
+
+            for(int j = move.getRow(); j < rowNum-3; j++){
+                if (cells[j][col]+cells[j+1][col]+cells[j+2][col]+cells[j+3][col]== player.value*4) {
+                    return true;
+                }
             }
-            if(count == 4){
-                //System.out.println("Vertical win");
-                return true;
-            }
-        }
+
 
 
         //Diagonal 4
@@ -205,7 +192,11 @@ public class Board {
                 //
                 //System.out.println("horizontal score"+sum);
 
-                if(sum>=3) {score+=5000;}
+                if (sum >= 3) {
+                    score += 5000
+                    ;} else if(sum==2){
+                    score+=1000;
+                };
                 if(player.value==-1) sum=-sum;
                 if(cells[i][j]!=1 && cells[i][j+1]!=1 && cells[i][j+2]!=1&& cells[i][j+3]!=1)
                     score-= (int) Math.pow(10,sum);
@@ -223,7 +214,11 @@ public class Board {
                 //System.out.println("Sum"+sum);
                 //System.out.println("vertical score"+sum);
 
-                if(sum>=3) {score+=5000;}
+                if (sum >= 3) {
+                    score += 5000
+                    ;} else if(sum==2){
+                    score+=1000;
+                };
                 if(player.value==-1) sum=-sum;
                 if(cells[i][j]!=1 && cells[i+1][j]!=1 && cells[i+2][j]!=1&& cells[i+3][j]!=1)
                     score-= (int) Math.pow(10,sum);
@@ -238,7 +233,11 @@ public class Board {
             for (int row = 0; row < rowNum - 3; row++) {
                 int sum = cells[row][col] + cells[row + 1][col - 1] + cells[row + 2][col - 2] + cells[row + 3][col - 3];
                // if(player.value==-1) sum=-sum;
-                if (sum >= 3) score += 5000;
+                if (sum >= 3) {
+                    score += 5000
+                ;} else if(sum==2){
+                    score+=1000;
+                };
                 if(player.value==-1) sum=-sum;
                 if(cells[row][col]!=1 && cells[row+1][col-1]!=1 && cells[row+2][col-2]!=1&& cells[row+3][col-3]!=1)
                     score -= (int) Math.pow(10, sum);
@@ -253,7 +252,11 @@ public class Board {
             for(int row=0; row<rowNum-3;row++ ){
                 int sum = cells[row][col] + cells[row + 1][col + 1] + cells[row + 2][col + 2] + cells[row + 3][col + 3];
                 //if(player.value==-1) sum=-sum;
-                if(sum >= 3) score += 5000;
+                if (sum >= 3) {
+                    score += 5000
+                    ;} else if(sum==2){
+                    score+=1000;
+                };
                 if(player.value==-1) sum=-sum;
                 if(cells[row][col]!=1 && cells[row+1][col+1]!=1 && cells[row+2][col+2]!=1&& cells[row+3][col+3]!=1)
                     score -= (int) Math.pow(10, sum);
