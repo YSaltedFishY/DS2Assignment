@@ -36,7 +36,7 @@ public class Player {
         return circle;
     }
 
-    public int CPUMove(){
+    public int CPUMove(Move move,Board gboard,Player human,Player AI){
         return -1;
     }
     protected enum pType{

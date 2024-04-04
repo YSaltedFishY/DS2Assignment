@@ -5,7 +5,9 @@ public class Main {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Game game = new Game("HaoYun", "Steven");
-        game.gameStart();
+//        Game game = new Game("HaoYun", "Steven");
+//        game.gameStart();
+        Menu menu = new Menu();
+        menu.ConsoleMenu();
     }
 }

@@ -7,7 +7,10 @@ public class Game {
     private Player player1;
     private Player player2;
     private Player current;
+    private Player opponent;
     private boolean gameOver;
+    private Move currentMove;
+
 
 
 
@@ -15,22 +18,51 @@ public class Game {
         gBoard = new Board();
         player1 = new Player(p1,"P1");
         player2 = new Player(p2,"P2");
-//        player1 = new AI_Player("p1","P1","weak");
-//        player2 = new AI_Player("p2","P2","weak");
         current = player1;
+        opponent = player2;
         gameOver = false;
+        currentMove = new Move();
     }
+
+    public Game(String p1,String difficulty,String CPUOrder){
+        gBoard = new Board();
+        gameOver = false;
+        currentMove = new Move();
+        if(CPUOrder.equals("P1")){
+            player1 = new AI_Player("p1","P1",difficulty);
+            player2 = new Player(p1,"P2");
+        } else if (CPUOrder.equals("P2")) {
+            player1 = new Player(p1,"P1");
+            player2 = new AI_Player("p2","P2",difficulty);
+        }
+        current = player1;
+        opponent = player2;
+    }
+
+    public Game(String difficulty){
+        gBoard = new Board();
+        gameOver = false;
+        currentMove = new Move();
+        player1 = new AI_Player("p1","P1",difficulty);
+        player2 = new AI_Player("p2","P2",difficulty);
+        current = player1;
+        opponent = player2;
+    }
+
+
 
     public void gameStart() throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
 
         while(!gameOver){
             gBoard.printBoard();
+//            System.out.println("Min max score: " + gBoard.getScore());
             int col = 0;
+
             if(current == player1) {
-                System.out.println("P1: " + current.getName() + "'s turn [token: " + current.getCircle() + "]");
+                System.out.println("P1: " + current.getName() + "'s turn [token: " + current.getCircle() + "]\n");
             }else{
-                System.out.println("P2: " + current.getName() + "'s turn [token: " + current.getCircle() + "]");
+                System.out.println("P2: " + current.getName() + "'s turn [token: " + current.getCircle() + "]\n");
             }
 
             if(!current.getName().equals("CPU")) {
@@ -43,7 +75,7 @@ public class Game {
                     continue;
                 }
             }else{
-                col = current.CPUMove();
+                col = current.CPUMove(currentMove,gBoard,opponent,current);
                 Thread.sleep(300);
                 if (col == -1) {
                     System.out.println("Something wrong with CPU input");
@@ -58,7 +90,7 @@ public class Game {
 //                input = scanner.next();
 //            }
 
-            Move currentMove = new Move(col);
+            currentMove.setCol(col);
 
             if(!gBoard.makeMove(currentMove, current)){
                 System.out.println("Unable to add more circles. Try a different column!");
@@ -72,8 +104,9 @@ public class Game {
 //                break;
 //            }
 
-            if(gBoard.winCheck(current,currentMove)){
+            if(gBoard.winCheck(current,opponent,currentMove)){
                 gBoard.printBoard();
+                System.out.println("Min max score: " + gBoard.getScore());
                 if(current == player1) {
                     System.out.println(current.getName() + " " + current.getCircle() + " P1 has won!");
                 }else{
@@ -89,8 +122,10 @@ public class Game {
 
             if(current == player1){
                 current = player2;
+                opponent = player1;
             }else{
                 current = player1;
+                opponent = player2;
             }
         }
 

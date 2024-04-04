@@ -2,8 +2,8 @@ public class Move {
     private int col;
     private int row;
 
-    public Move(int col){
-        this.col = col;
+    public Move(){
+
     }
     public int getCol(){
         return col;
@@ -16,4 +16,10 @@ public class Move {
     public void setRow(int row) {
         this.row = row;
     }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+
 }
