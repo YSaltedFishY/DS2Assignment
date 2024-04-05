@@ -4,10 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ec6c795b-ea6a-4428-ba74-d7c640c566b2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="41626240-3afa-4561-97c9-dae24d8ac16c" name="Changes" comment="Optimization">
+      <change afterPath="$PROJECT_DIR$/out/production/DS2Assignment/Board.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/DS2Assignment/Game.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/DS2Assignment/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/DS2Assignment/Move.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/DS2Assignment/Player$pType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/DS2Assignment/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Connect4/src/AI_Player.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Connect4/src/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/Connect4/src/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Connect4/src/Cell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Connect4/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/Connect4/src/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Connect4/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Connect4/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Connect4/src/Minimax.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Connect4/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/Connect4/src/Player.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,50 +26,76 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="finished" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 7
 }</component>
-  <component name="ProjectId" id="2e6rDcDGFeVbBsfTkyTBZVNaSJY" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="2eZUBtczu5g8HPG5X8HM9Ox3k9R" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/tjand/Comp2080/DS2Assignment",
+    "git-widget-placeholder": "menu",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ec6c795b-ea6a-4428-ba74-d7c640c566b2" name="Changes" comment="" />
-      <created>1711235751147</created>
+      <changelist id="41626240-3afa-4561-97c9-dae24d8ac16c" name="Changes" comment="" />
+      <created>1712111467206</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1711235751147</updated>
-      <workItem from="1711235752153" duration="354000" />
-      <workItem from="1711236173896" duration="473000" />
-      <workItem from="1711247919936" duration="1251000" />
+      <updated>1712111467206</updated>
+      <workItem from="1712111471783" duration="8285000" />
+      <workItem from="1712166088797" duration="5891000" />
     </task>
+    <task id="LOCAL-00001" summary="Optimization">
+      <option name="closed" value="true" />
+      <created>1712115840702</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1712115840702</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Optimization" />
+    <option name="LAST_COMMIT_MESSAGE" value="Optimization" />
   </component>
 </project>

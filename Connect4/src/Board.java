@@ -1,17 +1,44 @@
+import java.util.Hashtable;
+
+
+
 public class Board {
-    Cell[][] cells;
-    private int rowNum;
-    private int colNum;
+    int[][] cells;
+    private final int rowNum;
+    private final int colNum;
     private int numMove;
+    static Hashtable<Integer, String> circles;
+    static{
+        circles=new Hashtable<Integer, String>();
+        circles.put(1,"\033[0;32m●\u001B[0m");
+        circles.put(-1,"\033[0;31m●\u001B[0m");
+        circles.put(0,"_");
+
+
+    }
 
     public Board(){
         numMove = 0;
         rowNum = 6;
         colNum = 7;
-        cells = new Cell[rowNum][colNum];
+        cells = new int[rowNum][colNum];
+//        for(int i = 0; i < rowNum; i++){
+//            for(int j = 0; j < colNum; j++){
+//                cells[i][j] = 0;
+//            }
+//        }
+    }
+    public Board(int[][] pieces){
+        numMove = 0;
+        rowNum = 6;
+        colNum = 7;
+        cells = new int[rowNum][colNum];
         for(int i = 0; i < rowNum; i++){
             for(int j = 0; j < colNum; j++){
-                cells[i][j] = new Cell();
+                cells[i][j] = pieces[i][j];
+                if(pieces[i][j]!=0){
+                    numMove++;
+                }
             }
         }
     }
@@ -20,11 +47,11 @@ public class Board {
         return numMove;
     }
 
-    public Board(int numMove, Cell[][] c){
+    public Board(int numMove, int[][] c){
         this.numMove = numMove;
         rowNum = 6;
         colNum = 7;
-        cells = new Cell[rowNum][colNum];
+        cells = new int[rowNum][colNum];
         for(int i = 0; i < rowNum; i++){
             for(int j = 0; j < colNum; j++){
                 cells[i][j] = c[i][j];
@@ -39,10 +66,12 @@ public class Board {
 
     public void printBoard(){
         System.out.println("----Connect 4----");
+
+
         for(int i = 0; i < rowNum; i++){
             System.out.print("| ");
             for(int j = 0; j < colNum; j++){
-                System.out.print(cells[i][j] + " ");
+                System.out.print(circles.get(cells[i][j]) + " ");
             }
             System.out.print("| "+i+"\n");
 //            System.out.print("|\n");
@@ -51,53 +80,42 @@ public class Board {
         System.out.println("- A B C D E F G -");
     }
 
-    public int[] makeMove(Move move,Player player){
+    public boolean makeMove(Move move,Player player){
         for(int row = rowNum - 1; row >= 0; row--){
-            if(cells[row][move.getCol()].getPlayer() == null){
-                cells[row][move.getCol()].setPlayer(player);
+            if(cells[row][move.getCol()] == 0){
+                cells[row][move.getCol()]=player.value;
                 move.setRow(row);
                 numMove++;
-                return new int [] {row, move.getCol()};
+                return true;
             }
         }
-        return new int [] {-1, move.getCol()};
-    }
-
-    public boolean isFull(){
-        if(numMove == rowNum * colNum) return true;
         return false;
     }
 
-    public boolean winCheck(Player player , int row, int col){
-        int count = 0;
+    public boolean isFull(){
+        return numMove == rowNum * colNum;
+    }
+
+    public boolean winCheck(Player player, Move move){
+        int count;
+        int row=move.getRow();
+        int col=move.getCol();
 
         //Horizontal 4
-        for(int j = 0; j < colNum; j++) {
-            if (cells[row][j].getPlayer() == player) {
-                count++;
-            } else {
-                count = 0;
-            }
-
-            if(count == 4){
-                System.out.println("Horizontal win");
+        for(int j = 0; j < colNum-3; j++) {
+            if (cells[row][j]+cells[row][j+1]+cells[row][j+2]+cells[row][j+3]== player.value*4) {
                 return true;
             }
         }
-
-
         //Vertical 4 optimizable
-        for(int j = 0; j < rowNum; j++){
-            if(cells[j][col].getPlayer() == player){
-                count++;
-            }else{
-                count = 0;
+        //System.out.println(move.getRow());
+
+            for(int j = move.getRow(); j < rowNum-3; j++){
+                if (cells[j][col]+cells[j+1][col]+cells[j+2][col]+cells[j+3][col]== player.value*4) {
+                    return true;
+                }
             }
-            if(count == 4){
-                System.out.println("Vertical win");
-                return true;
-            }
-        }
+
 
 
         //Diagonal 4
@@ -115,13 +133,13 @@ public class Board {
 
 
         while (r_start<rowNum && c_start>=0) {
-            System.out.println("current row,col: " + r_start + "," + (c_start) + cells[r_start][c_start].getPlayer());
+           // System.out.println("current row,col: " + r_start + "," + (c_start) + cells[r_start][c_start].getPlayer());
 
-            if (cells[r_start][c_start].getPlayer() == player) {
+            if (cells[r_start][c_start] == player.value) {
                 count++;
                 //System.out.println("current row,col: " + r_start + "," + (c_start) + " count: " + count + cells[r_start][c_start].getPlayer().getName());
                 if (count == 4) {
-                    System.out.println("Diagonal win");
+                    //System.out.println("Diagonal win");
                     return true;
                 }
             }
@@ -132,13 +150,7 @@ public class Board {
             c_start--;
 
         }
-
-
-
-
-
         //Reverse diagonal
-
         count = 0;
         if(col>row) diff=row;
         else diff=col;
@@ -147,16 +159,14 @@ public class Board {
         r_start=row-diff;
 //        if(c_start<0) c_start=0;
 //        if(r_start<0) r_start=0;
-
-
         while(c_start<colNum && r_start<rowNum ){
-                System.out.println("current row,col: " + r_start + "," + (c_start) + cells[r_start][c_start].getPlayer());
+                //System.out.println("current row,col: " + r_start + "," + (c_start) + cells[r_start][c_start]);
 
-                if(cells[r_start][c_start].getPlayer() == player) {
+                if(cells[r_start][c_start] == player.value) {
                     count++;
 
                     if(count == 4){
-                        System.out.println("Reverse Diagonal win");
+                        //System.out.println("Reverse Diagonal win");
                         return true;
                     }
 
@@ -165,11 +175,100 @@ public class Board {
                 }
                 r_start++;
                 c_start++;
-
             }
-
-
         return false;
     }
+    public int boardScore(Player player){
 
+        int score = 0;
+
+        //checking horizontal
+        for(int i = 0; i < rowNum; i++) {
+            for (int j = 0; j < colNum - 3; j++) {
+                //int[] window= Arrays.copyOfRange(cells[i],i, i+3);
+                int sum=cells[i][j]+cells[i][j+1]+cells[i][j+2]+cells[i][j+3];
+                //sum=sum*player.value;
+                //
+                //System.out.println("horizontal score"+sum);
+
+                if (sum >= 3) {
+                    score += 5000
+                    ;} else if(sum==2){
+                    score+=1000;
+                };
+                if(player.value==-1) sum=-sum;
+                if(cells[i][j]!=1 && cells[i][j+1]!=1 && cells[i][j+2]!=1&& cells[i][j+3]!=1)
+                    score-= (int) Math.pow(10,sum);
+                if(cells[i][j]!=-1 && cells[i][j+1]!=-1 && cells[i][j+2]!=-1&& cells[i][j+3]!=-1)
+                    score+= (int) Math.pow(10,sum);
+
+
+            }
+        }
+        //checking vertical
+        for(int j = 0; j < colNum; j++) {
+            for (int i = 0; i < rowNum - 3; i++) {
+                int sum=cells[i][j]+cells[i+1][j]+cells[i+2][j]+cells[i+3][j];
+                ///sum=sum*player.value;
+                //System.out.println("Sum"+sum);
+                //System.out.println("vertical score"+sum);
+
+                if (sum >= 3) {
+                    score += 5000
+                    ;} else if(sum==2){
+                    score+=1000;
+                };
+                if(player.value==-1) sum=-sum;
+                if(cells[i][j]!=1 && cells[i+1][j]!=1 && cells[i+2][j]!=1&& cells[i+3][j]!=1)
+                    score-= (int) Math.pow(10,sum);
+                if(cells[i][j]!=-1 && cells[i+1][j]!=-1 && cells[i+2][j]!=-1&& cells[i+3][j]!=-1)
+                    score+= (int) Math.pow(10,sum);
+            }
+        }
+
+        //Diagonal 4
+        //diagonials starting from top row
+        for(int col = 3; col < colNum; col++) {
+            for (int row = 0; row < rowNum - 3; row++) {
+                int sum = cells[row][col] + cells[row + 1][col - 1] + cells[row + 2][col - 2] + cells[row + 3][col - 3];
+               // if(player.value==-1) sum=-sum;
+                if (sum >= 3) {
+                    score += 5000
+                ;} else if(sum==2){
+                    score+=1000;
+                };
+                if(player.value==-1) sum=-sum;
+                if(cells[row][col]!=1 && cells[row+1][col-1]!=1 && cells[row+2][col-2]!=1&& cells[row+3][col-3]!=1)
+                    score -= (int) Math.pow(10, sum);
+                if(cells[row][col]!=-1 && cells[row+1][col-1]!=-1 && cells[row+2][col-2]!=-1&& cells[row+3][col-3]!=-1)
+                    score += (int) Math.pow(10, sum);
+            }
+        }
+
+
+
+        for(int col = 0; col < colNum-3; col++) {
+            for(int row=0; row<rowNum-3;row++ ){
+                int sum = cells[row][col] + cells[row + 1][col + 1] + cells[row + 2][col + 2] + cells[row + 3][col + 3];
+                //if(player.value==-1) sum=-sum;
+                if (sum >= 3) {
+                    score += 5000
+                    ;} else if(sum==2){
+                    score+=1000;
+                };
+                if(player.value==-1) sum=-sum;
+                if(cells[row][col]!=1 && cells[row+1][col+1]!=1 && cells[row+2][col+2]!=1&& cells[row+3][col+3]!=1)
+                    score -= (int) Math.pow(10, sum);
+                if(cells[row][col]!=-1 && cells[row+1][col+1]!=-1 && cells[row+2][col+2]!=-1&& cells[row+3][col+3]!=-1)
+                    score += (int) Math.pow(10, sum);
+
+            }
+        }
+
+        //System.out.println("Total score "+score);
+        return score;
+
+
+    }
 }
+
